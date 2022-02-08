@@ -20,6 +20,10 @@ import java.util.regex.Pattern;
 @Data
 public class ProcessorThread extends Thread{
 
+    private static int THREAD_ID = 1;
+
+    private int ID;
+
     private Application application;
 
     public File file;
@@ -34,6 +38,8 @@ public class ProcessorThread extends Thread{
     List<SalesMan> salesmans;
 
     public ProcessorThread(Application application){
+        ID = THREAD_ID;
+        THREAD_ID++;
         this.application = application;
     }
 
@@ -46,6 +52,7 @@ public class ProcessorThread extends Thread{
     @Override
     public synchronized void run(){
         while((file = application.getFile())!=null) {
+            System.out.println("Thread "+ID+" - Processing: "+file);
             reset();
             try {
                 var linhas = FileManager.read(file);
@@ -54,6 +61,8 @@ public class ProcessorThread extends Thread{
                 String fileNameWithoutExt = FilenameUtils.getBaseName(file.getName());
                 FileManager.write(fileNameWithoutExt + ".done.dat", content);
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e){
                 e.printStackTrace();
             }
         }

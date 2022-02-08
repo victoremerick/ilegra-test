@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class Application {
 
-    public static int MAX_THREADS = Runtime.getRuntime().availableProcessors();
+    public static int MAX_THREADS;
 
     private List<File> files;
     private int lastGetted;
@@ -38,9 +38,9 @@ public class Application {
     }
 
     private void startThreads(){
+
         for(int i = 0; i < MAX_THREADS; i++){
             var thread = new ProcessorThread(this);
-            thread.setDaemon(true);
             thread.start();
         }
     }
